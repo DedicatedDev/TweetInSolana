@@ -1,0 +1,14 @@
+[features]
+seeds = false
+[programs.localnet]
+election = "6aYgYjZ3aQFMwiYhUZnmBrGNDcoGnAx3UyebJJpx5Fp"
+
+[registry]
+url = "https://anchor.projectserum.com"
+
+[provider]
+cluster = "localnet"
+wallet = "/Users/freebird0323/.config/solana/id.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
