@@ -920,6 +920,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "simple_vote"
+version = "0.1.0"
+dependencies = [
+ "anchor-lang",
+]
+
+[[package]]
 name = "solana-frozen-abi"
 version = "1.8.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"

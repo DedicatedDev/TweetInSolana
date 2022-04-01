@@ -1,10 +1,10 @@
 use anchor_lang::prelude::*;
-declare_id!("6aYgYjZ3aQFMwiYhUZnmBrGNDcoGnAx3UyebJJpx5Fp");
+declare_id!("CxX5JFxfvkeVnCi3MntppR8SYQtmsQXiHYwZqYPEA93s");
 
 pub mod data;
 pub mod errors;
 
-use errors::ErrorCode;
+use errors::VoteErrorCode;
 use data::{
     Candidate,
     VotePlatform,
@@ -21,9 +21,10 @@ pub mod simple_vote {
 
     use super::*;
 
-    pub fn setup_platform(ctx: Context<VotePlatform>) -> Result<()> {
+    pub fn setup_vote_platform(ctx: Context<VotePlatform>) -> Result<()> {
         let vote = &mut ctx.accounts.candidate;
         vote.people_who_voted.clear();
+        vote.authority = *ctx.accounts.user.key;
         Ok(())
     }
 
@@ -35,10 +36,17 @@ pub mod simple_vote {
         Ok(())
     }
 
-    pub fn vote_candidate(ctx: Context<VoteCandidate>) -> Result<()> {
-        
+    pub fn vote_candidate(ctx: Context<VoteCandidate>, voter: Pubkey) -> Result<()> {
+        let candidate = &mut ctx.accounts.candidate;
+        if candidate.people_who_voted.contains(&voter) {
+            return Err(VoteErrorCode::CannotVoteAgain.into())
+        }else{
+            candidate.people_who_voted.push(voter);
+        }
         Ok(())
     }
+
+
 }
 
 

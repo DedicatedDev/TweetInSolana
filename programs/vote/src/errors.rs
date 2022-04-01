@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 #[error_code]
-pub enum ErrorCode {
+pub enum VoteErrorCode {
     #[msg("Cannot double vote!")]
     CannotVoteAgain,
 

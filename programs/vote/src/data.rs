@@ -11,8 +11,9 @@ pub struct  VotePlatform<'info> {
 
 #[derive(Accounts)]
 pub struct RegisterCandidate<'info> {
-    #[account(mut)]
+    #[account(mut,has_one = authority)]
     pub candidate: Account<'info, Candidate>,
+    pub authority: Signer<'info>
 }
 
 #[derive(Accounts)]
@@ -27,5 +28,6 @@ pub struct Candidate {
     pub name: String,
     pub age: u8,
     pub des: String,
+    pub authority:Pubkey,
     pub people_who_voted: Vec<Pubkey>
 }
