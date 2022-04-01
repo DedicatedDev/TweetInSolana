@@ -10,6 +10,8 @@ describe("simple_vote", () => {
 
   const program = anchor.workspace.SimpleVote as Program<SimpleVote>;
   const candidateKeyPair = anchor.web3.Keypair.generate();
+  const candidateKeyPair1 = anchor.web3.Keypair.generate();
+
   const user = program.provider.wallet;
   const other = anchor.web3.Keypair.generate();
   const voter = anchor.web3.Keypair.generate();
@@ -91,5 +93,37 @@ describe("simple_vote", () => {
     } catch (errorInfo) {
       console.log(errorInfo);
     }
+  });
+
+  it("setup vote platform! for candidate2", async () => {
+    await program.rpc.setupVotePlatform({
+      accounts: {
+        candidate: candidateKeyPair1.publicKey,
+        user: user.publicKey,
+        systemProgram: anchor.web3.SystemProgram.programId,
+      },
+      signers: [candidateKeyPair1],
+    });
+
+    let candidate = await program.account.candidate.fetch(
+      candidateKeyPair1.publicKey
+    );
+    expect(candidate.peopleWhoVoted.length).to.equal(0);
+    expect(candidate.authority.toString()).to.equal(user.publicKey.toString());
+  });
+
+  it("register another candidate2", async () => {
+    await program.rpc.registerCandidate("Ariana Grand", 28, "Signer", {
+      accounts: {
+        candidate: candidateKeyPair1.publicKey,
+        authority: user.publicKey,
+      },
+    });
+    let candidate = await program.account.candidate.fetch(
+      candidateKeyPair1.publicKey
+    );
+    expect(candidate.name).to.equal("Ariana Grand");
+    expect(candidate.age).to.equal(28);
+    expect(candidate.des.toString()).to.equal("Signer");
   });
 });
