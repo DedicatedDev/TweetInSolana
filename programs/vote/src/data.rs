@@ -19,7 +19,8 @@ pub struct RegisterCandidate<'info> {
 #[derive(Accounts)]
 pub struct  VoteCandidate<'info> {
     #[account(mut)]
-    pub candidate: Account<'info, Candidate>
+    pub candidate: Account<'info, Candidate>,
+    pub signer:Signer<'info>
 }
 
 #[account]

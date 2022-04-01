@@ -12,6 +12,7 @@ describe("simple_vote", () => {
   const candidateKeyPair = anchor.web3.Keypair.generate();
   const user = program.provider.wallet;
   const other = anchor.web3.Keypair.generate();
+  const voter = anchor.web3.Keypair.generate();
 
   it("setup vote platform!", async () => {
     await program.rpc.setupVotePlatform({
@@ -28,15 +29,14 @@ describe("simple_vote", () => {
     );
     expect(candidate.peopleWhoVoted.length).to.equal(0);
     expect(candidate.authority.toString()).to.equal(user.publicKey.toString());
-    
-});
+  });
 
   it("register candidate", async () => {
     await program.rpc.registerCandidate("Talyer Swift", 35, "CEO", {
       accounts: {
         candidate: candidateKeyPair.publicKey,
         authority: user.publicKey,
-      }
+      },
     });
     let candidate = await program.account.candidate.fetch(
       candidateKeyPair.publicKey
@@ -47,16 +47,49 @@ describe("simple_vote", () => {
   });
 
   it("can't change candidate info by others", async () => {
-   try {
-    await program.rpc.registerCandidate("Tal Swift", 35, "CEO", {
+    try {
+      await program.rpc.registerCandidate("Tal Swift", 35, "CEO", {
         accounts: {
           candidate: candidateKeyPair.publicKey,
           authority: other.publicKey,
         },
       });
-      assert.ok(false)
-   } catch (error) {
-       expect(error.toString()).to.equal("Error: Signature verification failed")
-   }
+      assert.ok(false);
+    } catch (error) {
+      expect(error.toString()).to.equal("Error: Signature verification failed");
+    }
+  });
+
+  it("vote to candidate", async () => {
+    const voter1 = anchor.web3.Keypair.generate();
+    await program.rpc.voteCandidate(voter.publicKey, {
+      accounts: {
+        candidate: candidateKeyPair.publicKey,
+        signer: voter.publicKey,
+      },
+      signers: [voter],
+    });
+    const candidate = await program.account.candidate.fetch(
+      candidateKeyPair.publicKey
+    );
+    expect(
+      candidate.peopleWhoVoted
+        .map((item) => item.toString())
+        .includes(voter.publicKey.toString())
+    ).to.equal(true);
+  });
+
+  it("can't vote to candidate again", async () => {
+    try {
+      await program.rpc.voteCandidate(voter.publicKey, {
+        accounts: {
+          candidate: candidateKeyPair.publicKey,
+          signer: voter.publicKey,
+        },
+        signers: [voter],
+      });
+    } catch (errorInfo) {
+      console.log(errorInfo);
+    }
   });
 });
