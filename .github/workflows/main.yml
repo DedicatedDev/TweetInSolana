@@ -72,3 +72,26 @@ jobs:
       - store_artifacts:
           path: /root/project/target/types
           destination: types
+
+workflows:
+  dev-deploy:
+    when:
+      equal: [ dev-deploy, << pipeline.git.branch >> ]
+    jobs:
+      - build
+      - approve-deploy-devnet:
+          type: approval
+          requires:
+            - build
+      - deploy-devnet:
+          requires:
+            - approve-deploy-devnet
+  build-test:
+    when:
+      not:
+        equal: [ dev-deploy, << pipeline.git.branch >> ]
+    jobs:
+      - formatting
+      - security-check
+      - test
+      - build
