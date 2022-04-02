@@ -54,12 +54,6 @@ describe("staker", () => {
     const [stakePDA, stakePDABump] = await findStakeMintAuthorityPDA();
     // For the TRANSFER
     const [beefBagPDA, beefBagBump] = await getProgramBeefTokenBagPDA();
-
-    console.log("-----*******-------")
-    console.log("StakeMintAddress:=>",stakeMintAddress.toString())
-    console.log("BeefMintAddress:=>",beefMintAddress.toString())
-    console.log("-----*******-------")
-
     //2. Execute our stuff
     await program.rpc.stake(
         stakePDABump,
@@ -140,8 +134,10 @@ describe("staker", () => {
     // 3. Tests
 
     // We expect the user to have redeem $� to the program.
+    console.log(await user.stakeBalance())
+    console.log(await user.beefBalance())
     expect(await user.stakeBalance()).to.be.eql(userStakes - 5_000);
-
+   
     // We expect the user to have received 5_000 beef $� back.
     expect(await user.beefBalance()).to.be.eql(userBeefs + 5_000);
   });

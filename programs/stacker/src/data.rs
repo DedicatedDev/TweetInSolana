@@ -30,8 +30,6 @@ pub struct CreateBeefTokenBag<'info> {
         address = BEEF_MINT_ADDRESS.parse::<Pubkey>().unwrap(),
     )]
     pub beef_mint: Account<'info, Mint>,
-
-
     // 3. The rent payer
     #[account(mut)]
     pub payer: Signer<'info>,

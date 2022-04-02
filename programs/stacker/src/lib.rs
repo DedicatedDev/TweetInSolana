@@ -28,7 +28,7 @@ pub mod staker{
     pub fn stake(
         ctx: Context<Stake>,
         stake_mint_authority_bump: u8,
-        program_beef_bag_bump: u8,
+        _program_beef_bag_bump: u8,
         beef_amount: u64
     ) -> Result<()> {
 
@@ -60,8 +60,6 @@ pub mod staker{
             &signer
         );
         token::mint_to(cpi_ctx, stake_amount)?;
-
-
 
         // ************************************************************
         // 2. Ask SPL Token Program to transfer � from the user.
