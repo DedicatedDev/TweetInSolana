@@ -13,6 +13,7 @@ xdescribe("election", () => {
   const owner = anchor.web3.Keypair.generate();
 
   it("setup tweet platform!", async () => {
+    
     const tweetKeypair = anchor.web3.Keypair.generate();
     const user = program.provider.wallet;
     await program.rpc.setupPlatform({
@@ -27,6 +28,7 @@ xdescribe("election", () => {
     let tweet = await program.account.tweet.fetch(tweetKeypair.publicKey);
     expect(tweet.likes).to.equal(0);
     expect(tweet.message).to.equal("");
+
   });
 
   it("Write a tweet", async () => {

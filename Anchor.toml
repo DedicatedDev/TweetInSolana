@@ -1,9 +1,9 @@
 [features]
 seeds = false
 [programs.localnet]
-simple_vote = "CxX5JFxfvkeVnCi3MntppR8SYQtmsQXiHYwZqYPEA93s"
-election = "4QFvFTrTbSx1RQoUaWDekhGUbwM54iJwv2kC7YdeVDGu"
-
+simple_vote = "4gsCCCy3Njzmf1QNGz3P6GyPEtZnRftDCQjnpnVTtDjT"
+election = "DXakT9aCTCSak2gxKKaddyVLGJBNhUf13nfz94gXjsNJ"
+staker = "HQYiW7oWUMX4WMBdHVZM5gZNVwz7Sbg4sv59ZWREGKEY"
 
 [registry]
 url = "https://anchor.projectserum.com"

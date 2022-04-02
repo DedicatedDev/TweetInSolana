@@ -3,7 +3,7 @@ import { Program } from "@project-serum/anchor";
 import { assert, expect, use } from "chai";
 import { SimpleVote } from "../target/types/simple_vote";
 
-describe("simple_vote", () => {
+xdescribe("simple_vote", () => {
   // Configure the client to use the local cluster.
   const provider = anchor.Provider.env();
   anchor.setProvider(provider);
