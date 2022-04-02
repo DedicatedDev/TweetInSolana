@@ -2,7 +2,8 @@
 use anchor_lang::prelude::*;
 #[derive(Accounts)]
 pub struct  VotePlatform<'info> {
-    #[account(init, payer = user, space = 9000)]
+    //#[account(init, payer = user, space = 9000)]
+    #[account(mut)]
     pub candidate: Account<'info, Candidate>,
     #[account(mut)]
     pub user: Signer<'info>,
